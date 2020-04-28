@@ -5,3 +5,50 @@ body {
 footer  {
     padding-top: 20px;
 }
+
+.container {
+    display: grid;
+    width: 900px;
+    grid-template-columns: auto auto auto;
+    column-gap: 10px;
+    grid-template-rows: auto;
+    row-gap: 17px;
+    grid-template-areas: 
+        "header header header"
+        "main main main";
+    background-color: white;
+    padding: 10px;
+
+}
+h2{
+    grid-area: header;
+}
+.card{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-top: solid 4px rgb(164, 214, 72);
+    display: grid;
+    grid-template-rows: auto auto auto;
+    row-gap: 8px;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    text-align: center;
+}
+
+.title{
+    font-size: 20px;
+    font-weight: bold;
+    
+}
+
+.media{
+    justify-self: center;
+}
+
+.content{
+    font-size: 13px;
+}
+
+img{
+    width: 250px;
+    height: 250px;
+}

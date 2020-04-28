@@ -39,8 +39,41 @@ Vue.component('app-footer', {
             year: (new Date).getFullYear()
         }
     }
-})
+});
 
+Vue.component('news-list', {
+    template: `
+      <div class="container">
+        <h2>News</h2>
+
+          <div v-for="article in articles" class="card">
+              <div class="title"> {{ article.title }} </div>
+
+              <div class="media"> 
+                  <img :src="article.urlToImage">
+              </div>
+
+              <div class="content"> {{ article.description}} </div
+
+      </div>
+    `,
+      created: function() {
+          let self = this;
+          fetch('https://newsapi.org/v2/top-headlines?country=us&apiKey=f41cfe6bcb3b451b8a564b46864b98c7')
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+                console.log(data);
+                self.articles = data.articles;
+            });
+      },
+      data: function() {
+          return {
+            articles: []
+          }
+      }
+ });
 
 let app = new Vue({
     el: '#app',
