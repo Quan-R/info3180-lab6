@@ -41,8 +41,9 @@ Vue.component('app-footer', {
     }
 });
 
-Vue.component('news-list', {
+const NewsList = Vue.component('news-list', {
     template: `
+    
       <div class="container">
         <h2>News</h2>
 
@@ -56,10 +57,19 @@ Vue.component('news-list', {
               <div class="content"> {{ article.description}} </div
 
       </div>
+      <div class="form-inline d-flex justify-content-center">
+
+          <div class="form-group mx-sm-3 mb-2">
+              <label class="sr-only" for="search" >Search</label>
+              <input type="search" name="search" v-model="searchTerm" id="search" class="form-control mb-2 mr-sm-2" placeholder="Enter search term here" />
+              <button class="btn btn-primary mb-2" @click="searchNews">Search</button>
+          </div>
+
+      </div>
     `,
       created: function() {
           let self = this;
-          fetch('https://newsapi.org/v2/top-headlines?country=us&apiKey=f41cfe6bcb3b451b8a564b46864b98c7')
+          fetch('https://newsapi.org/v2/top-headlines?country=us&apiKey=')
             .then(function(response) {
                 return response.json();
             })
@@ -70,15 +80,51 @@ Vue.component('news-list', {
       },
       data: function() {
           return {
-            articles: []
+            articles: [],
+            searchTerm: ''
           }
+      },
+
+      methods: {
+        searchNews: function() {
+            let self = this;
+            fetch('https://newsapi.org/v2/everything?q=' + self.searchTerm + '&language=en&apiKey=')
+              .then(function(response) {
+                  return response.json();
+              })
+              .then(function(data) {
+                  console.log(data);
+                  self.articles = data.articles;
+              });
+        }
       }
  });
 
-let app = new Vue({
-    el: '#app',
-    data: {
+ const Home = Vue.component('home', {
+  template: `
+      <div class="home">
+          <img src="/static/images/logo.png" alt="VueJS Logo">
+          <h1>{{ welcome }}</h1>
+      </div>
+  `,
+  data: function() {
+      return {
         welcome: 'Hello World! Welcome to VueJS'
-    }
+      }
+  }
 });
+
+const router = new VueRouter({
+      mode: 'history',
+      routes: [
+          { path: '/', component: Home },
+          { path: '/news', component: NewsList }
+      ]
+ });
+
+const app = new Vue({
+    el: '#app',
+    router
+});
+
 
